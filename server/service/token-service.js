@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 const TokenModel = require('../models/token-model')
 
 class TokenService {
@@ -19,6 +20,34 @@ class TokenService {
 
 		const token = await TokenModel.create({userId, refreshToken})
 		return token 
+	}
+	async removeToken(refreshToken){
+		const token  = await TokenModel.deleteOne({refreshToken})
+		return token
+	}
+
+	async validateAccessToken(token){
+		try {
+			const user = jwt.verify(token, process.env.JWT_SECRET_ACCESS_KEY)
+			return user
+		}
+		catch(e) {
+			return null
+		}
+	}
+
+	async validateRefreshToken(token){
+		try {
+			const user = jwt.verify(token, process.env.JWT_SECRET_REFRESH_KEY)
+			return user
+		}
+		catch(e) {
+			return null
+		}
+	}
+	async findToken(refreshToken){
+		const token  = await TokenModel.findOne({refreshToken})
+		return token
 	}
 }
 
