@@ -13,8 +13,8 @@ class EmailService {
 			},
 		})
 	}
+
 	async sendActivationLink(catcher, link){
-		//console.log(`Email send from ${process.env.SMTP_USER} to ${catcher}`)
 		await this.transporter.sendMail({
 			from: process.env.SMTP_USER,
 			to: catcher,
