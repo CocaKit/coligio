@@ -17,27 +17,13 @@ const LoginForm = () => {
         <div>
             <div className="LoginForm">
                 <form className="form">
-                    <CustomInput
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        OnChange
-                        labelText="Email"
-                        id="email"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-
-                        type="text"
-                    />
-                    <CustomInput
+                   <input
+                       type="email"
+                       value={email}
+                       onChange={e => setEmail(e.target.value)}/>
+                    <input
                         value={password}
                         onChange={e => setPass(e.target.value)}
-                        labelText="Password"
-                        id="password"
-                        formControlProps={{
-                            fullWidth: true
-                        }}
-
                         type="password"
                     />
 
