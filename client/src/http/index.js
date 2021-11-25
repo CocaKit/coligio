@@ -22,7 +22,7 @@ $api.interceptors.response.use((config) => {
             localStorage.setItem('token', response.data.accessToken);
             return $api.request(originalRequest);
         } catch (e) {
-            console.log('Не авторизован')
+            console.log('Не авторизован');
         }
     }
     throw error;
