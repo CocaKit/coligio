@@ -2,8 +2,9 @@ class UserDto {
 	constructor(model) {
 		this.id = model._id
 		this.nickname = model.nickname
-		this.password = model.password
+		this.email = model.email
 		this.isActivated = model.isActivated
+		this.level = model.level
 	}
 }
 
