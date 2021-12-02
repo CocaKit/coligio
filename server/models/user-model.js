@@ -6,7 +6,14 @@ const UserSchema = new Schema({
 	password: {type: String, required: true},
 	isActivated: {type: Boolean, default: false},
 	activationLink: {type: String},
-	level: {type: Number, default: 1}
+	level: {type: Number, default: 1},
+	words: [{
+		idWord : {type: Schema.Types.ObjectId, ref: 'Dictionary', required: true, unique: true},
+		nextDate : {type : Date, required: true},
+		daysPassed : {type : Number, default: 0},
+		accessDays : {type : Number},
+		failDays : {type : Number}
+	}]
 })
 
 module.exports = model('User', UserSchema)

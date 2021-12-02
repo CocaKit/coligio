@@ -5,6 +5,7 @@ class UserDto {
 		this.email = model.email
 		this.isActivated = model.isActivated
 		this.level = model.level
+		this.words = model.words
 	}
 }
 

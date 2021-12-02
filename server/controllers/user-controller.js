@@ -73,5 +73,69 @@ class UserController {
 			next(e)
 		}
 	}
+
+	async editUser(req, res, next){
+		try {
+			const validationErrors = validationResult(req)
+			if (!validationErrors.isEmpty()){
+				return next(ApiError.badRequestError("Invalid input data", validationErrors.array()))
+			}
+			const {id, nickname, password, level} = req.body
+			const userData = await UserService.editUser(id, nickname, password, level)
+			return res.json(userData)
+
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async addWordToPersonal(req, res, next) {
+		try {
+			const validationErrors = validationResult(req)
+			if (!validationErrors.isEmpty()){
+				return next(ApiError.badRequestError("Invalid input data", validationErrors.array()))
+			}
+			const {userId, wordId, nextDays} = req.body
+			const user = await UserService.addWordToPersonal(userId, wordId, nextDays)
+			return res.json(user)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async deleteWordFromPersonal(req, res, next) {
+		try {
+			const {userId, wordId} = req.body
+			const user = await UserService.deleteWordFromPersonal(userId, wordId)
+			return res.json(user)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async getTodayWords(req, res, next) {
+		try {
+			const {userId} = req.body
+			const words = await UserService.getTodayWords(userId)
+			return res.json(words)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async getPossibleWords(req, res, next) {
+		try {
+			const {userId} = req.body
+			const words = await UserService.getPossibleWords(userId)
+			return res.json(words)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
 }
 module.exports = new UserController()

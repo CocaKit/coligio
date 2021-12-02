@@ -17,17 +17,29 @@ router.get('/activate/:link', userController.activate)
 // refresh token
 router.get('/refresh', userController.refresh)
 router.get('/users', authMiddleware, userController.getUsers)
+router.post('/edit', authMiddleware,
+		body('nickname').isLength({min: 1, max: 30}),
+		body('password').isLength({min: 1, max: 30}),
+		body('level').isNumeric({min: 1, max: 3}),
+		userController.editUser)
 
-router.get('/dictionary/add/one', 
+router.get('/dictionary/main/add/one', 
 		body('russianWord').isLength({min: 1, max: 30}),
 		body('englishWord').isLength({min: 1, max: 30}),
 		dictionaryController.addWord)
-router.get('/dictionary/add/many', 
+router.get('/dictionary/main/add/many', 
 		body().isArray(),
 		body('*.russianWord').isLength({min: 1, max: 30}),
 		body('*.englishWord').isLength({min: 1, max: 30}),
 		dictionaryController.addManyWords)
-router.get('/dictionary/delete', dictionaryController.deleteWord)
-router.get('/dictionary/words', dictionaryController.getWords)
+router.get('/dictionary/main/delete', dictionaryController.deleteWord)
+router.get('/dictionary/main/words', dictionaryController.getWords)
+
+router.get('/dictionary/personal/add/one', authMiddleware, 
+		body('nextDays').isNumeric({min: 1}),
+		userController.addWordToPersonal)
+router.get('/dictionary/personal/delete', authMiddleware, userController.deleteWordFromPersonal)
+router.get('/dictionary/personal/words/today', authMiddleware, userController.getTodayWords)
+router.get('/dictionary/personal/words/possible', authMiddleware, userController.getPossibleWords)
 
 module.exports = router;

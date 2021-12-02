@@ -1,4 +1,5 @@
 const UserModel = require('../models/user-model')
+const DictionaryModel = require('../models/dictionary-model')
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 const EmailService = require('./email-service')
@@ -67,7 +68,7 @@ class UserService {
 			throw ApiError.unauthorisedError()
 		}
 
-		user = UserModel.findById(user.id)
+		user = await UserModel.findById(user.id)
 		const userDto = new UserDto(user)
 		const tokens = TokenService.generateToken({...userDto})
 		await TokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -79,6 +80,107 @@ class UserService {
 		return users
 	}
 
+	async editUser(id, nickname, password, level) {
+		const user = await UserModel.findById(id)
+		if (!user){
+			throw ApiError.badRequestError("User with this id dont exists")
+		}
+
+		const passwordHash = await bcrypt.hash(password, 3)
+		user.nickname = nickname
+		user.level = level
+		user.password = passwordHash
+		await user.save()
+
+		const userDto = new UserDto(user)
+		return userDto
+	}
+
+	async addWordToPersonal(userId, wordId, nextDays){
+		const user = await UserModel.findById(userId)
+		if (!user) {
+			throw ApiError.badRequestError(`User with id ${userId} dont exists`)
+		}
+
+		const word = await DictionaryModel.findById(wordId)
+		if (!word) {
+			throw ApiError.badRequestError(`Word with id ${wordId} dont exists`)
+		}
+
+		console.log(user)
+		const wordsArray = user.words
+		const similarIndex = wordsArray.findIndex(item => item.idWord == wordId)
+		console.log(wordsArray)
+		console.log(similarIndex)
+		if (similarIndex != -1) { 
+			wordsArray.splice(similarIndex, 1)
+		}
+
+		console.log(wordsArray)
+		var now = new Date()
+		var nextDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + nextDays)
+		const accessDays = parseInt(nextDays / 2) + nextDays + 1
+		const failDays = nextDays - parseInt(nextDays / 2)
+		wordsArray.push({'idWord' : wordId, 'nextDate' : nextDate, 'daysPassed' : nextDays, 'accessDays' : accessDays, 'failDays' : failDays})
+
+		user.words = wordsArray
+		user.save()
+
+		const userDto = new UserDto(user)
+		return userDto
+	}
+
+	async deleteWordFromPersonal(userId, wordId){
+		const user = await UserModel.findById(userId)
+		if (!user) {
+			throw ApiError.badRequestError(`User with id ${userId} dont exists`)
+		}
+
+		const word = await DictionaryModel.findById(wordId)
+		if (!word) {
+			throw ApiError.badRequestError(`Word with id ${wordId} dont exists`)
+		}
+
+		var wordsArray = user.words
+		const similarIndex = wordsArray.findIndex(item => item.idWord == wordId)
+		if (similarIndex == -1) { 
+			throw ApiError.badRequestError(`User has no word with id ${wordId} dont exists`)
+		}
+		wordsArray.splice(similarIndex, 1)
+
+		user.words = wordsArray
+		user.save()
+		const userDto = new UserDto(user)
+		return userDto
+	}
+
+	async getTodayWords(userId) {
+		const user = await UserModel.findById(userId)
+		if (!user) {
+			throw ApiError.badRequestError(`User with id ${userId} dont exists`)
+		}
+
+		const now = new Date()
+		const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+		const wordsArray = user.words
+		const todayWordsArray = wordsArray.filter(item => item.nextDate.valueOf() <= todayDate.valueOf())
+
+		return todayWordsArray
+	}
+
+	async getPossibleWords(userId) {
+		const user = await UserModel.findById(userId)
+		if (!user) {
+			throw ApiError.badRequestError(`User with id ${userId} dont exists`)
+		}
+
+		const personalWordsArray = user.words.map(item => item.idWord.toString())
+		const mainWordsArray = await DictionaryModel.find()
+
+		const possibleWordsArray = mainWordsArray.filter(item => !personalWordsArray.includes(item._id.toString()));
+
+		return possibleWordsArray
+	}
 }
 
 module.exports = new UserService
