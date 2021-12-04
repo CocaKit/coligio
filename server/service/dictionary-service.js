@@ -24,6 +24,13 @@ class DictionaryService {
 		const words = await DictionaryModel.find()
 		return words
 	}
+
+	async reset(arr) {
+		await DictionaryModel.deleteMany()
+
+		const words = await DictionaryModel.create(arr)
+		return words
+	}
 }
 
 module.exports = new DictionaryService()

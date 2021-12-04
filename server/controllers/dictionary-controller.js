@@ -55,6 +55,21 @@ class DictionaryController {
 			next(e)
 		}
 	}
+	async reset(req, res, next){
+		try {
+			const validationErrors = validationResult(req)
+			if (!validationErrors.isEmpty()){
+				return next(ApiError.badRequestError("Invalid input data", validationErrors.array()))
+			}
+
+			const arr = req.body
+			const words = await DictionaryService.reset(arr)
+			return res.json(words)
+		}
+		catch(e){
+			next(e)
+		}
+	}
 }
 
 module.exports= new DictionaryController()

@@ -1,14 +1,4 @@
-PORT=4000
-DB_URL="mongodb+srv://root:toor@coligiodb.ervl7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-JWT_SECRET_ACCESS_KEY="j58gjd8ghsa94j"
-JWT_SECRET_REFRESH_KEY="bgofu9i4o3h843"
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT=465
-SMTP_USER="coligio076@gmail.com"
-SMTP_PASSWORD="rootroot181"
-API_URL="http://localhost:4000"
-CLIENT_URL="http://localhost:3000"
-START_LEVEL_VAR=[
+arr: [
 	{
 		"num": 1,
 		"correctExercisesWords": ["ex-1-1", "ex-1-2", "ex-1-3"],
@@ -23,5 +13,10 @@ START_LEVEL_VAR=[
 		"num": 3,
 		"correctExercisesWords": ["ex-3-1", "ex-3-2", "ex-3-3"],
 		"correctTestsWords": ["test-3-1", "test-3-2", "test-3-3"],
+	},
+	{
+		"num": 4,
+		"correctExercisesWords": ["ex-4-1", "ex-4-2", "ex-4-3"],
+		"correctTestsWords": ["test-4-1", "test-4-2", "test-4-3"],
 	},
 ]
