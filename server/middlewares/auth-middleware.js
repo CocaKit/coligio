@@ -1,5 +1,7 @@
 const ApiError = require('../exceptions/api-error')
 const TokenService = require('../service/token-service')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 module.exports = function (req, res, next) {
 	try {
@@ -13,10 +15,7 @@ module.exports = function (req, res, next) {
 			return next(ApiError.unauthorisedError())
 		}
 
-		const user = TokenService.validateAccessToken(accessToken)
-		if (!user){
-			return next(ApiError.unauthorisedError())
-		}
+		const user = jwt.verify(accessToken, process.env.JWT_SECRET_ACCESS_KEY)
 
 		req.user = user
 		next()

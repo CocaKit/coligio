@@ -28,23 +28,13 @@ class TokenService {
 		return token
 	}
 
-	async validateAccessToken(token){
-		try {
-			const user = jwt.verify(token, process.env.JWT_SECRET_ACCESS_KEY)
-			return user
-		}
-		catch(e) {
-			return null
-		}
-	}
-
 	async validateRefreshToken(token){
 		try {
 			const user = jwt.verify(token, process.env.JWT_SECRET_REFRESH_KEY)
 			return user
 		}
 		catch(e) {
-			return null
+			return Promise.resolve(null)
 		}
 	}
 
