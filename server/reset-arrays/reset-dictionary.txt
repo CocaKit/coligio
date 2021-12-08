@@ -1,0 +1,18 @@
+[
+    {
+        "russianWord" : "свинья",
+        "englishWord" : "pig"
+    },
+    {
+        "russianWord" : "собака",
+        "englishWord" : "dog"
+    },
+    {
+        "russianWord" : "кот",
+        "englishWord" : "cat"
+    },
+    {
+        "russianWord" : "птица",
+        "englishWord" : "bird"
+    }
+]
