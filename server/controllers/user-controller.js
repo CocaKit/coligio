@@ -80,10 +80,25 @@ class UserController {
 			if (!validationErrors.isEmpty()){
 				return next(ApiError.badRequestError("Invalid input data", validationErrors.array()))
 			}
-			const {id, nickname, password, level} = req.body
-			const userData = await UserService.editUser(id, nickname, password, level)
+			const {id, nickname, level} = req.body
+			const userData = await UserService.editUser(id, nickname, level)
 			return res.json(userData)
 
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async editPassword(req, res, next){
+		try {
+			const validationErrors = validationResult(req)
+			if (!validationErrors.isEmpty()){
+				return next(ApiError.badRequestError("Invalid input data", validationErrors.array()))
+			}
+			const {id, oldPassword, newPassword} = req.body
+			const userData = await UserService.editPassword(id, oldPassword, newPassword)
+			return res.json(userData)
 		}
 		catch(e) {
 			next(e)

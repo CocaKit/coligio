@@ -18,9 +18,12 @@ router.post('/refresh', userController.refresh)
 router.get('/users', authMiddleware, userController.getUsers)
 router.post('/edit', authMiddleware,
 		body('nickname').isLength({min: 1, max: 30}),
-		body('password').isLength({min: 1, max: 30}),
 		body('level').isNumeric({min: 1, max: 3}),
 		userController.editUser)
+router.post('/edit/password', authMiddleware,
+		body('oldPassword').isLength({min: 1, max: 30}),
+		body('newPassword').isLength({min: 1, max: 30}),
+		userController.editPassword)
 
 router.post('/dictionary/main/add/one', 
 		body('russianWord').isLength({min: 1, max: 30}),
@@ -42,9 +45,9 @@ dictionaryController.reset)
 router.post('/dictionary/personal/add/one', authMiddleware, 
 		body('nextDays').isNumeric({min: 1}),
 		userController.addWordToPersonal)
-router.get('/dictionary/personal/delete', authMiddleware, userController.deleteWordFromPersonal)
-router.get('/dictionary/personal/words/today', authMiddleware, userController.getTodayWords)
-router.get('/dictionary/personal/words/possible', authMiddleware, userController.getPossibleWords)
+router.post('/dictionary/personal/delete', authMiddleware, userController.deleteWordFromPersonal)
+router.post('/dictionary/personal/words/today', authMiddleware, userController.getTodayWords)
+router.post('/dictionary/personal/words/possible', authMiddleware, userController.getPossibleWords)
 
 router.post('/level/correct/exercises', authMiddleware, levelController.getLevelCorrectExercisesWords)
 router.post('/level/correct/tests', authMiddleware, levelController.getLevelCorrectTestsWords)

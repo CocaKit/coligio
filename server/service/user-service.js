@@ -80,15 +80,32 @@ class UserService {
 		return users
 	}
 
-	async editUser(id, nickname, password, level) {
+	async editUser(id, nickname, level) {
 		const user = await UserModel.findById(id)
 		if (!user){
-			throw ApiError.badRequestError("User with this id dont exists")
+			throw ApiError.badRequestError(`User with id ${id} dont exists`)
 		}
 
-		const passwordHash = await bcrypt.hash(password, 3)
 		user.nickname = nickname
 		user.level = level
+		await user.save()
+
+		const userDto = new UserDto(user)
+		return userDto
+	}
+
+	async editPassword(id, oldPassword, newPassword){
+		const user = await UserModel.findById(id)
+		if (!user){
+			throw ApiError.badRequestError(`User with id ${id} dont exists`)
+		}
+
+		const correctPassword = await bcrypt.compare(oldPassword, user.password)
+		if (!correctPassword){
+			throw ApiError.badRequestError(`Wrong password`)
+		}
+
+		const passwordHash = await bcrypt.hash(newPassword, 3)
 		user.password = passwordHash
 		await user.save()
 
