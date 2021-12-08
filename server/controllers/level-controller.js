@@ -40,6 +40,28 @@ class LevelController{
 			next(e)
 		}
 	}
+
+	async addComment(req, res, next) {
+		try {
+			const {num, idUser, message} = req.body
+			const comments = await LevelService.addComment(num, idUser, message)
+			return res.json(comments)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
+
+	async showComment(req, res, next) {
+		try {
+			const {num} = req.body
+			const comments = await LevelService.showComment(num)
+			return res.json(comments)
+		}
+		catch(e) {
+			next(e)
+		}
+	}
 }
 
 module.exports = new LevelController()

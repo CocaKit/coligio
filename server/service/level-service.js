@@ -1,4 +1,5 @@
 const LevelModel = require('../models/level-model')
+const UserModel = require('../models/user-model')
 const ApiError = require('../exceptions/api-error')
 require('dotenv').config()
 
@@ -28,6 +29,37 @@ class LevelService {
 
 		const levels = await LevelModel.create(arr)
 		return levels
+	}
+
+	async addComment(num, idUser, message) {
+		const level = await LevelModel.findOne({num})
+		if (!level){
+			throw ApiError.badRequestError(`level ${num} dont exists.`)
+		}
+
+		const user = await UserModel.findById(idUser)
+		if (!user){
+			throw ApiError.badRequestError(`User with id ${idUser} dont exists.`)
+		}
+
+		const now = new Date()
+		const date = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+		const commentsArray = level.comments
+		commentsArray.push({'idUser': idUser, 'message': message, 'date': date})
+
+		level.comments = commentsArray
+		level.save()
+		return commentsArray
+	}
+
+	async showComment(num) {
+		const level = await LevelModel.findOne({num})
+		if (!level){
+			throw ApiError.badRequestError(`level ${num} dont exists.`)
+		}
+
+		const commentsArray = level.comments
+		return commentsArray
 	}
 }
 
