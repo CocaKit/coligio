@@ -8,7 +8,7 @@ const UserSchema = new Schema({
 	activationLink: {type: String},
 	level: {type: Number, default: 0},
 	words: [{
-		idWord : {type: Schema.Types.ObjectId, ref: 'Dictionary', required: true, unique: true},
+		idWord : {type: Schema.Types.ObjectId, ref: 'Dictionary', required: true},
 		nextDate : {type : Date, required: true},
 		daysPassed : {type : Number, default: 0},
 		accessDays : {type : Number},
