@@ -1,22 +1,22 @@
-arr: [
+[
 	{
 		"num": 1,
-		"correctExercisesWords": ["ex-1-1", "ex-1-2", "ex-1-3"],
-		"correctTestsWords": ["test-1-1", "test-1-2", "test-1-3"],
+		"correctExercisesWords": ["am", "are", "is"],
+		"correctTestsWords": ["am", "are", "is"]
 	},
 	{
 		"num" : 2,
 		"correctExercisesWords": ["ex-2-1", "ex-2-2", "ex-2-3"],
-		"correctTestsWords": ["test-2-1", "test-2-2", "test-2-3"],
+		"correctTestsWords": ["test-2-1", "test-2-2", "test-2-3"]
 	},
 	{
 		"num": 3,
 		"correctExercisesWords": ["ex-3-1", "ex-3-2", "ex-3-3"],
-		"correctTestsWords": ["test-3-1", "test-3-2", "test-3-3"],
+		"correctTestsWords": ["test-3-1", "test-3-2", "test-3-3"]
 	},
 	{
 		"num": 4,
 		"correctExercisesWords": ["ex-4-1", "ex-4-2", "ex-4-3"],
-		"correctTestsWords": ["test-4-1", "test-4-2", "test-4-3"],
-	},
+		"correctTestsWords": ["test-4-1", "test-4-2", "test-4-3"]
+	}
 ]

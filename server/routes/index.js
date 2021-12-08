@@ -14,13 +14,13 @@ router.post('/reg',
 router.post('/login', userController.login)
 router.post('/logout', userController.logout)
 router.get('/activate/:link', userController.activate)
-router.post('/refresh', userController.refresh)
+router.get('/refresh', userController.refresh)
 router.get('/users', authMiddleware, userController.getUsers)
 router.post('/edit', authMiddleware,
 		body('nickname').isLength({min: 1, max: 30}),
 		body('level').isNumeric({min: 1, max: 3}),
 		userController.editUser)
-router.post('/edit/password', authMiddleware,
+router.post('/password', authMiddleware,
 		body('oldPassword').isLength({min: 1, max: 30}),
 		body('newPassword').isLength({min: 1, max: 30}),
 		userController.editPassword)
